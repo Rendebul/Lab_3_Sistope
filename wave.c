@@ -34,6 +34,9 @@ int main(int argc, char **argv)
         case 'h':
                     numero_hebras = atoi(optarg);
                     break;
+        case 'd':   
+                    mostrar = true;
+                    break;
         case '?':
                     if (optopt == 'm' || optopt == 'n' || optopt == 'i' || optopt == 'h')
                         fprintf (stderr, "La opcion -%c requires un argumento.\n", optopt);
@@ -60,7 +63,7 @@ int main(int argc, char **argv)
   }
   
   matriz = crearMatriz(tam_matriz);
-  matriz = inicializarMatriz(tam_matriz, matriz);
+  matriz = inicializarMatrizInicial(tam_matriz, matriz);
   
   matriz_t1 = crearMatriz(tam_matriz);
   matriz_t1 = inicializarMatriz(tam_matriz, matriz_t1);
@@ -70,6 +73,30 @@ int main(int argc, char **argv)
 
   imprimirMatriz(tam_matriz, matriz);
 
+  for (int i = 0; i < iteraciones; ++i)
+  {
+    if (mostrar)
+    {
+      printf("Iteracion numero: %d\n", i);
+    }
+    if (i > 1)
+    {
+      matriz = moverMatriz(matriz, matriz_t1, matriz_t2, tam_matriz);
+    } else if (i == 1){
+
+      matriz = moverMatrizInicial(matriz, matriz_t1, tam_matriz);
+    }
+
+    matriz_t2 = copiarMatriz(matriz_t1, matriz_t2, tam_matriz);
+    //imprimirMatriz(tam_matriz, matriz_t2);
+    matriz_t1 = copiarMatriz(matriz, matriz_t1, tam_matriz);
+    //imprimirMatriz(tam_matriz, matriz_t1);
+
+    if (mostrar)
+    {
+      imprimirMatriz(tam_matriz, matriz_t1);
+    }
+  }
   liberarMatriz(tam_matriz, matriz);
   return 0;
 }

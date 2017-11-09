@@ -99,7 +99,7 @@ int main(int argc, char **argv)
   hilos = (pthread_t *)malloc(sizeof(pthread_t)*numero_hebras);
 
 
-  for (i = 0; i < iteraciones;)
+  for (i = 0; i <= iteraciones;)
   {
     if (mostrar)
     {

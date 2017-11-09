@@ -32,7 +32,7 @@ float ** inicializarMatrizInicial(int i, float **matriz) {
     {
         for (aux2 = 0; aux2 < i; ++aux2)
         {   
-            if (aux > (0.4*i) && aux < (0.6*i) && aux2 > (0.4*i) && aux2 < (0.6*i)) {
+            if (aux > (0.4*i-1) && aux < (0.6*i-1) && aux2 > (0.4*i-1) && aux2 < (0.6*i-1)) {
                 matriz[aux][aux2] = 20;
             } else {
                 matriz[aux][aux2] = 0;
@@ -81,8 +81,7 @@ float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, in
     {
         for (j = 1; j < tam-1; ++j)
         {
-            //printf("Resultado: %f\n", resultado);
-            matriz[i][j] = 2*matriz_t1[i][j] - matriz_t2[i][j] + (1.0)*((0.1/0.2)*(0.1/0.2))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]);
+            matriz[i][j] = (2*matriz_t1[i][j]) - (matriz_t2[i][j]) + (((1.0)*((0.1/2.0)*(0.1/2.0)))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]));
         }
     }
 
@@ -95,9 +94,7 @@ float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam, int de
     {
         for (j = 1; j < tam-1; ++j)
         {
-            //float resultado = matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j];
-            //printf("Resultado: %f\n", resultado);
-            matriz[i][j] = matriz_t1[i][j] + (1.0)*((0.1/0.2)*(0.1/0.2))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]);
+            matriz[i][j] = matriz_t1[i][j] + (1.0)*(((0.1/2.0)*(0.1/2.0))/2)*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - (4.0) * matriz_t1[i][j]);
         }
     }
 

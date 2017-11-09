@@ -70,10 +70,11 @@ int main(int argc, char **argv)
   
   matriz_t2 = crearMatriz(tam_matriz);
   matriz_t2 = inicializarMatriz(tam_matriz, matriz_t2);
-
+  int *asignacion = asignar(tam_matriz-2, numero_hebras);
+  data *datos = asignarData( asignacion, tam_matriz, numero_hebras);
   imprimirMatriz(tam_matriz, matriz);
-
-  for (int i = 0; i < iteraciones; ++i)
+  int i;
+  for (i = 0; i < iteraciones; ++i)
   {
     if (mostrar)
     {

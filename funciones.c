@@ -14,8 +14,8 @@ float ** crearMatriz(int i){
         printf("Error al asignar memoria\n");
         exit(-1);
     }
-
-    for (int aux = 0; aux < i; ++aux)
+    int aux;
+    for (aux = 0; aux < i; ++aux)
     {
         matriz[aux] = (float*)malloc(sizeof(float)*i);
         if(!matriz[aux]) {
@@ -27,9 +27,10 @@ float ** crearMatriz(int i){
 };
 
 float ** inicializarMatrizInicial(int i, float **matriz) {
-    for (int aux = 0; aux < i; ++aux)
+    int aux, aux2;
+    for (aux = 0; aux < i; ++aux)
     {
-        for (int aux2 = 0; aux2 < i; ++aux2)
+        for (aux2 = 0; aux2 < i; ++aux2)
         {   
             if (aux > (0.4*i) && aux < (0.6*i) && aux2 > (0.4*i) && aux2 < (0.6*i)) {
                 matriz[aux][aux2] = 20;
@@ -42,9 +43,10 @@ float ** inicializarMatrizInicial(int i, float **matriz) {
 };
 
 float ** inicializarMatriz(int i, float **matriz) {
-    for (int aux = 0; aux < i; ++aux)
+    int aux, aux2;
+    for (aux = 0; aux < i; ++aux)
     {
-        for (int aux2 = 0; aux2 < i; ++aux2)
+        for (aux2 = 0; aux2 < i; ++aux2)
         {   
             matriz[aux][aux2] = 0;
 
@@ -54,16 +56,18 @@ float ** inicializarMatriz(int i, float **matriz) {
 };
 
 void liberarMatriz(int i, float ** matriz) {
-    for (int linea = 0; linea < i; ++linea)
+    int linea;
+    for (linea = 0; linea < i; ++linea)
     {
         free(matriz[linea]);
     }
 };
 
 void imprimirMatriz(int i, float ** matriz) {
-    for (int linea = 0; linea < i; ++linea)
+    int linea, columna;
+    for (linea = 0; linea < i; ++linea)
     {
-        for (int columna = 0; columna < i; ++columna)
+        for (columna = 0; columna < i; ++columna)
         {
            printf("|%f|", matriz[linea][columna]);
         }
@@ -72,13 +76,12 @@ void imprimirMatriz(int i, float ** matriz) {
 };
 
 float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, int tam) {
-    for (int i = 1; i < tam-1; ++i)
+    int i, j;
+    for (i = 1; i < tam-1; ++i)
     {
-        for (int j = 1; j < tam-1; ++j)
+        for (j = 1; j < tam-1; ++j)
         {
-            float resultado_2 = (0.1/0.2)*(0.1/0.2);
-            float resultado = matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j];
-            printf("Resultado: %f\n", resultado);
+            //printf("Resultado: %f\n", resultado);
             matriz[i][j] = 2*matriz_t1[i][j] - matriz_t2[i][j] + (1.0)*((0.1/0.2)*(0.1/0.2))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]);
         }
     }
@@ -87,12 +90,13 @@ float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, in
 };
 
 float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam) {
-    for (int i = 1; i < tam-1; ++i)
+    int i, j;
+    for (i = 1; i < tam-1; ++i)
     {
-        for (int j = 1; j < tam-1; ++j)
+        for (j = 1; j < tam-1; ++j)
         {
-            float resultado = matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j];
-            printf("Resultado: %f\n", resultado);
+            //float resultado = matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j];
+            //printf("Resultado: %f\n", resultado);
             matriz[i][j] = matriz_t1[i][j] + (1.0)*((0.1/0.2)*(0.1/0.2))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]);
         }
     }
@@ -101,9 +105,10 @@ float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam) {
 };
 
 float ** copiarMatriz(float ** matriz, float ** matriz_2, int tam) {
-    for (int i = 0; i < tam; ++i)
+    int i, j;
+    for (i = 0; i < tam; ++i)
     {
-        for (int j = 0; j < tam; ++j)
+        for (j = 0; j < tam; ++j)
         {
             matriz_2[i][j] = matriz[i][j];
         }
@@ -111,3 +116,36 @@ float ** copiarMatriz(float ** matriz, float ** matriz_2, int tam) {
 
     return matriz;
 };
+
+int* asignar(int num, int num_hebras) {
+    int piso = floor((double)num/num_hebras);
+    int *asignacion = malloc(sizeof(int)*num_hebras);
+    int diferencia = (num%num_hebras);
+    int i;
+    for (i = 0; i < num_hebras; ++i)
+    {
+        asignacion[i] = piso;
+    }
+
+    for (i = 0; i < diferencia; ++i)
+    {
+        asignacion[i] += 1;
+    }
+
+    return asignacion;
+};
+
+data* asignarData(int* asignacion, int tam_matriz, int num_hebras) {
+    data* arregloDatos = (data*)malloc(sizeof(data)*num_hebras);
+    int palabra_ant = 1;
+    int i;
+    for (i = 0; i < num_hebras; ++i)
+    {   
+        int fila_inicio = palabra_ant;
+        int fila_termino = palabra_ant + asignacion[i];
+        data dato = {i, fila_inicio, fila_termino, tam_matriz};
+        arregloDatos[i] = dato;
+        palabra_ant += asignacion[i];
+    }
+    return arregloDatos;
+}

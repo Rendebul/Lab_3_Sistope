@@ -75,9 +75,9 @@ void imprimirMatriz(int i, float ** matriz) {
     }
 };
 
-float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, int tam) {
+float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, int tam, int desde, int hasta) {
     int i, j;
-    for (i = 1; i < tam-1; ++i)
+    for (i = desde; i < hasta; ++i)
     {
         for (j = 1; j < tam-1; ++j)
         {
@@ -89,9 +89,9 @@ float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, in
     return matriz;
 };
 
-float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam) {
+float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam, int desde, int hasta) {
     int i, j;
-    for (i = 1; i < tam-1; ++i)
+    for (i = desde; i < hasta; ++i)
     {
         for (j = 1; j < tam-1; ++j)
         {
@@ -148,4 +148,15 @@ data* asignarData(int* asignacion, int tam_matriz, int num_hebras) {
         palabra_ant += asignacion[i];
     }
     return arregloDatos;
+}
+
+void imprimirData(data* datos, int num_hebras){
+    for (int i = 0; i < num_hebras; ++i)
+    {
+        printf("Impresión datos:\n");
+        printf("id: %d\n", datos[i].id);
+        printf("fila inicio: %d\n", datos[i].fila_inicio);
+        printf("fila termino: %d\n", datos[i].fila_termino);
+        printf("tam matrix: %d\n", datos[i].tam_matriz);
+    }
 }

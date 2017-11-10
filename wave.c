@@ -141,8 +141,9 @@ int main(int argc, char **argv)
     }
     i += 1;
   }
-  liberarMatriz(tam_matriz, matriz_t1);
-  liberarMatriz(tam_matriz, matriz_t2);
-  liberarMatriz(tam_matriz, matriz);
+
+  //liberarMatriz(tam_matriz, matriz_t1);
+  //liberarMatriz(tam_matriz, matriz_t2);
+  //liberarMatriz(tam_matriz, matriz);
   return 0;
 }

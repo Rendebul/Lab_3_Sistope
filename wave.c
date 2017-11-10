@@ -35,21 +35,25 @@ void *run(void *params) {
 int main(int argc, char **argv)
 {
   //Se declaran variables
-  int tam_matriz, iteraciones, numero_hebras = 0;
+  int tam_matriz, iteraciones, numero_hebras, iteracion_salida = 0;
   int c;
   bool mostrar = false;
+  char *nombre_salida;
   pthread_t* hilos;
 
   opterr = 0;
 
     //Se capta el getopt correspondiente al coordinador.
-  while ((c = getopt (argc, argv, "i:h:n:d::")) != -1)
+  while ((c = getopt (argc, argv, "s:t:T:h:n:d::")) != -1)
     switch (c) {
         case 'n':
                     tam_matriz = atoi(optarg);
                     break;
-        case 'i':
+        case 'T':
                     iteraciones = atoi(optarg);
+                    break;
+        case 't':
+                    iteracion_salida = atoi(optarg);
                     break;
         case 'h':
                     numero_hebras = atoi(optarg);
@@ -57,8 +61,11 @@ int main(int argc, char **argv)
         case 'd':   
                     mostrar = true;
                     break;
+        case 's':
+                    nombre_salida = optarg;
+                    break;
         case '?':
-                    if (optopt == 'm' || optopt == 'n' || optopt == 'i' || optopt == 'h')
+                    if (optopt == 'm' || optopt == 'n' || optopt == 'i' || optopt == 'h' || optopt == 'T' || optopt == 't' || optopt == 's')
                         fprintf (stderr, "La opcion -%c requires un argumento.\n", optopt);
                     else if (isprint (optopt))
                         fprintf (stderr, "Opcion desconocida `-%c'.\n", optopt);
@@ -74,11 +81,15 @@ int main(int argc, char **argv)
     abort();
   }
   if(iteraciones < 1){
-    printf("Tamaño incorrecto para inicializar tablero\n");
+    printf("Tamaño incorrecto de iteraciones para inicializar\n");
     abort();
   }
   if(numero_hebras < 1){
     printf("Tamaño incorrecto para inicializar hebras\n");
+    abort();
+  }
+  if(iteracion_salida>iteraciones) {
+    printf("Error en el tamaño de la iteracion de salida\n");
     abort();
   }
   
@@ -92,9 +103,11 @@ int main(int argc, char **argv)
   matriz_t2 = inicializarMatriz(tam_matriz, matriz_t2);
   int *asignacion = asignar(tam_matriz-2, numero_hebras);
   data *datos = asignarData( asignacion, tam_matriz, numero_hebras);
-  imprimirData(datos, numero_hebras);
+  if (mostrar) {
+    imprimirData(datos, numero_hebras);
 
-  imprimirMatriz(tam_matriz, matriz);
+    imprimirMatriz(tam_matriz, matriz);
+  }
 
   hilos = (pthread_t *)malloc(sizeof(pthread_t)*numero_hebras);
 
@@ -116,6 +129,9 @@ int main(int argc, char **argv)
       pthread_join(hilos[aux], NULL);
     }
 
+    if (iteracion_salida == i) {
+      salidaArchivo(matriz, nombre_salida, tam_matriz);
+    }
     matriz_t2 = copiarMatriz(matriz_t1, matriz_t2, tam_matriz);
     matriz_t1 = copiarMatriz(matriz, matriz_t1, tam_matriz);
 

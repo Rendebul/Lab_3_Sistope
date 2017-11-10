@@ -27,3 +27,4 @@ float ** copiarMatriz(float ** matriz, float ** matriz_2, int tam);
 int* asignar(int num, int num_hebras);
 data* asignarData(int* asignacion, int tam_matriz, int num_hebras);
 void imprimirData(data* datos, int num_hebras);
+void salidaArchivo(float ** matriz, char * salida, int tam);

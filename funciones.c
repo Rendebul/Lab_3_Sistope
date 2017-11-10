@@ -81,7 +81,7 @@ float ** moverMatriz(float ** matriz, float ** matriz_t1, float ** matriz_t2, in
     {
         for (j = 1; j < tam-1; ++j)
         {
-            matriz[i][j] = (2*matriz_t1[i][j]) - (matriz_t2[i][j]) + (((1.0)*((0.1/2.0)*(0.1/2.0)))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]));
+            matriz[i][j] = (2*matriz_t1[i][j]) - (matriz_t2[i][j]) + (((1.0)*((0.1/0.2)*(0.1/0.2)))*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - 4 * matriz_t1[i][j]));
         }
     }
 
@@ -94,7 +94,7 @@ float ** moverMatrizInicial(float ** matriz, float ** matriz_t1, int tam, int de
     {
         for (j = 1; j < tam-1; ++j)
         {
-            matriz[i][j] = matriz_t1[i][j] + (1.0)*(((0.1/2.0)*(0.1/2.0))/2)*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - (4.0) * matriz_t1[i][j]);
+            matriz[i][j] = matriz_t1[i][j] + (1.0)*(((0.1/0.2)*(0.1/0.2))/2)*(matriz_t1[i+1][j] + matriz_t1[i-1][j] + matriz_t1[i][j+1] + matriz_t1[i][j-1] - (4.0) * matriz_t1[i][j]);
         }
     }
 
@@ -158,3 +158,19 @@ void imprimirData(data* datos, int num_hebras){
         printf("tam matrix: %d\n", datos[i].tam_matriz);
     }
 }
+
+void salidaArchivo(float ** matriz, char * salida, int tam){
+    FILE *fa;
+    fa = fopen(salida, "wb");
+    if(fa==NULL) {
+        printf("Error al abrir el archivo\n");
+        abort();
+    }
+    int i;
+    for (i = 0; i < tam; ++i)
+    {
+        fwrite(matriz[i], tam, sizeof(float), fa);
+    }
+
+    fclose(fa);
+};

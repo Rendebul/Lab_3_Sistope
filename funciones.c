@@ -148,7 +148,8 @@ data* asignarData(int* asignacion, int tam_matriz, int num_hebras) {
 }
 
 void imprimirData(data* datos, int num_hebras){
-    for (int i = 0; i < num_hebras; ++i)
+    int i;
+    for (i = 0; i < num_hebras; ++i)
     {
         printf("Impresión datos:\n");
         printf("id: %d\n", datos[i].id);
